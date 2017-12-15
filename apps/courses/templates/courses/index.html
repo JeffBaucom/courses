@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'courses/normalize.css' %}">
+    <link rel="stylesheet" href="{% static 'courses/skeleton.css' %}">
+    <link rel="stylesheet" href="{% static 'courses/main.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="row top-bar">
+            <h1>Courses</h1>
+        </div>
+        <form action="/courses/create" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <h2>Add a course</h2>
+            </div>
+            <div class="row">
+                <label for="">Name: </label>
+                <input type="text" name="name">
+            </div>
+            <div class="row">
+                <label for="">Description: </label>
+                <input type="text" name="desc">
+            </div>
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <div class="row">
+                <input class="button-primary" type="submit" value="Add">
+            </div>
+        </form>
+        <div class="courses">
+            <div class="row">
+                <h2>Courses</h2>
+            </div>
+            <table>
+                <tr>
+                    <th>Course Name</th>
+                    <th>Description</th>
+                    <th>Date Added</th>
+                    <th>Actions</th>
+                </tr>
+                {% for course in courses %}
+                <tr>
+                    <td>{{course.name}}</td>
+                    <td>{{course.desc}}</td>
+                    <td>{{course.created_at}}</td>
+                    <td><a href="/courses/destroy/{{course.id}}"><button>remove</button></a></td>
+                </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+    </div>
+    
+</body>
+</html>
